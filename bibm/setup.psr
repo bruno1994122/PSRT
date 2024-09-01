@@ -1,0 +1,5 @@
+bib.config = {
+  setupf=create_bib.py
+  functions=create_bib
+  bibd=create_bib
+}
