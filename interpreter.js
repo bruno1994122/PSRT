@@ -1,51 +1,37 @@
-// interpreter.js
-
 const fs = require('fs');
 
-// Função para interpretar o código PSR
 function interpret(code) {
-  // Implementar a lógica de interpretação
   const lines = code.split('\n');
 
   lines.forEach(line => {
     line = line.trim();
 
-    if (line.startsWith('screentext')) {
-      // Exemplo de impressão de texto
-      const text = line.match(/screentext"(.+)"/)[1];
-      console.log(text);
-    } else if (line.startsWith('If')) {
-      // Processar estrutura If-Elif-Else
-      // (Implementar lógica para verificar condição e executar bloco apropriado)
-    } else if (line.startsWith('loop.ve')) {
-      // Processar loops
-      // (Implementar lógica para loops)
-    } else if (line.startsWith('import')) {
-      // Processar importações
-      // (Implementar lógica para importar funções de outros arquivos)
-    } else if (line.startsWith('function')) {
-      // Processar definição de funções
-      // (Implementar lógica para definir e armazenar funções)
+    if (line.startsWith('import')) {
+      const module = line.match(/import\("(.+)"\)/)[1];
+      console.log(`# Importando módulo ${module}`);
     } else if (line.startsWith('tryto')) {
-      // Processar tryto-error
-      // (Implementar lógica para execução de blocos try e catch)
-    } else if (line.startsWith('with')) {
-      // Processar with-response
-      // (Implementar lógica para execução de scripts com retorno e tratamento de erros)
+      const script = line.match(/tryto\(open\("(.+)"\)/)[1];
+      const errorMsg = line.match(/error\(all, \{(.+)\}\)/)[1];
+      console.log(`try:`);
+      console.log(`    with open("${script}") as file:`);
+      console.log(`        # Executar script`);
+      console.log(`except Exception as e:`);
+      console.log(`    print("${errorMsg}")`);
+    } else if (line.startsWith('screentext')) {
+      const text = line.match(/screentext\("(.+)"\)/)[1];
+      console.log(`print("${text}")`);
     } else if (line.match(/var\s+\w+\s*=\s*\d+/)) {
-      // Processar declaração de variáveis numéricas
       const [varName, value] = line.split('=').map(s => s.trim());
-      global[varName] = parseInt(value, 10);
+      console.log(`${varName} = ${value}`);
     } else if (line.match(/var\s+\w+\s*=\s*\{.+\}/)) {
-      // Processar dicionários
-      // (Implementar lógica para parse e armazenamento de dicionários)
+      const [varName, content] = line.split('=', 2).map(s => s.trim());
+      console.log(`${varName} = {${content}}`);
     } else if (line.match(/var\s+\w+\s*=\s*\[.+\]/)) {
-      // Processar arrays
-      // (Implementar lógica para parse e armazenamento de arrays)
+      const [varName, content] = line.split('=', 2).map(s => s.trim());
+      console.log(`${varName} = [${content}]`);
     }
   });
 }
 
-// Exemplo de execução
-const code = fs.readFileSync('mp.psr', 'utf8');
+const code = fs.readFileSync('example.psr', 'utf8');
 interpret(code);
