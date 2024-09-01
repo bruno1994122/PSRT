@@ -8,6 +8,7 @@ SRC = main.c
 PYTHON_SCRIPT = parser.py
 JS_SCRIPT = interpreter.js
 PSR_FILE = mp.psr
+BIB_CREATE_SCRIPT = create_bib.py
 
 # Regras
 all: $(TARGET)
@@ -30,17 +31,16 @@ test: $(TARGET) $(PSR_FILE)
 clean:
 	rm -f $(TARGET)
 
-# Adiciona regras adicionais conforme necessário
-
-# Exemplo de regra para executar o interpretador com um arquivo PSR
+# Regras adicionais
 run_interpreter:
 	./$(TARGET) $(PSR_FILE)
 
-# Regra para executar scripts Python e JavaScript
 run_all: run_python run_js
 
-# Regra para instalar o binário no diretório de binários do sistema
 install: $(TARGET)
 	cp $(TARGET) /usr/local/bin/
+
+create_bib:
+	python3 $(BIB_CREATE_SCRIPT)
 
 # Adicione mais regras conforme necessário
