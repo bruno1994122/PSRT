@@ -1,0 +1,2 @@
+# PSRT
+psr para TERMUX.
